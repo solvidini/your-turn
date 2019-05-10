@@ -1998,7 +1998,7 @@ fieldset[disabled] .btn-neutral.active {
 }
 
 .footer nav > ul a:not(.btn):hover, .footer nav > ul a:not(.btn):focus {
-    color: #777777;
+    color: rgba(119, 14, 8, 0.74);
 }
 
 .footer .social-area {

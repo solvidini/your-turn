@@ -1,0 +1,151 @@
+/* Google fonts */
+@import url('https://fonts.googleapis.com/css?family=Hind:400,500,700');
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+body{
+    font-family: 'Hind';
+    background-color: #000;
+    color: #fff;
+}
+
+.my-alert {
+    padding: 0.5em;
+    display: block;
+    border: none;
+    border-radius: 10px;
+    background-color: rgba(235, 14, 12, 0.51);
+    color: white;
+    margin-bottom: 0.5em;
+}
+
+.my-button {
+     background-color: rgb(210,66,70);
+     width: 35%;
+
+     border-radius: 4px;
+     border: none;
+     outline: none;
+
+     color: white;
+     font-weight: 600;
+     font-size: 1.2em;
+     text-decoration: none;
+
+     padding: 0.6em 1.8em;
+     cursor: pointer;
+ }
+
+.my-button-2 {
+    background-color: rgb(210,66,70);
+    width: 100%;
+
+    border-radius: 4px;
+    border: none;
+    outline: none;
+
+    color: white;
+    font-weight: 600;
+    font-size: 1.2em;
+    text-decoration: none;
+
+    padding: 0.6em 1.8em;
+    cursor: pointer;
+}
+
+.my-button:hover, .my-button-2 {
+    background-color: rgba(210, 66, 70, 0.85);
+}
+
+.brand-logo{
+    width: 120px;
+}
+.hero{
+    background-image: url('../assets/img/sidebar.jpg');
+    background-size: cover;
+    background-position: center center;
+    min-height: 100%;
+    min-width: 100%;
+    width: auto;
+    height: auto;
+    margin: 0;
+    position: absolute;
+}
+.hero:after{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+    left: 0;
+    top: 0;
+    content: "";
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.hero .container{
+    z-index: 3;
+    position: relative;
+}
+.hero .card{
+    background: rgba(0,0,0,0.7);
+}
+a, a:hover{
+    color: #fff;
+    text-decoration: underline;
+}
+@media (min-width:768px){
+    section{
+        padding: 40px 0px;
+    }
+    .hero .card .card-block{
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+}
+@media (max-width:1024px){
+    section{
+        padding: 20px;
+    }
+    .my-button {
+        width: 100%;
+    }
+}
+.bg-alt {
+    background-color: #fff;
+}
+.form-group {
+    margin-bottom: 1.5rem;
+}
+.form-control{
+    height: 45px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #FFFFFF; 
+}
+.form-control:focus {
+    border-color: #FFFFFF;
+    background-color: transparent;
+    color: #FFFFFF; 
+}
+.custom-control-input:checked~.custom-control-indicator {
+    color: #fff;
+    background-color: rgb(210,66,70);
+    outline-color: rgb(210,66,70);
+}
+.content-divider {
+    text-align: center;
+    border-bottom: 1px solid white;
+    position: relative;
+    z-index: 1;
+}
+.eye-pos {
+    float: right;
+    z-index: 2;
+    position: relative;
+    margin-top: -1.9em;
+    margin-right: 1em;
+}

@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-
 {% block isActive %}
     <ul class="nav">
-        <li>
+        <li class="active">
             <a href="{{ path('forecast') }}">
                 <i class="pe-7s-user"></i>
                 <p>Forecast</p>
@@ -31,23 +30,22 @@
 {% endblock %}
 
 {% block content %}
+    <main>
 
+        <div class="col-sm-12">
+            <h3 class="centered"> Add city for which you'd like to see forecasts.</h3>
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card">
-
-                    </div>
+            <form action="{{ path('forecast') }}" method="get">
+                <div class="searcher">
+                    <input type="search" name="city_name" class="my-searcher" placeholder="City name...">
+                    <br>
+                    <button class="my-button" type="submit">Add</button>
                 </div>
-                <div class="col-md-4">
-                    <div class="card card-user">
-                    </div>
+            </form>
 
-                </div>
-            </div>
         </div>
 
+    </main>
 
 
 {% endblock %}

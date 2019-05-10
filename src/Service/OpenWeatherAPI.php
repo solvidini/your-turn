@@ -45,7 +45,7 @@ class OpenWeatherAPI {
                 'temp_min' => $data->main->temp_min - 273.15,
                 'temp_max' => $data->main->temp_max - 273.15
             ),
-            'wind' => $data->wind->speed,
+            'wind' => $data->wind->speed * 1.6,
             'name' => $data->name
         );
 

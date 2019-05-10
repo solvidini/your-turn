@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block isActive %}
+    <ul class="nav">
+        <li class="active">
+            <a href="{{ path('forecast') }}">
+                <i class="pe-7s-user"></i>
+                <p>Forecast</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="pe-7s-note2"></i>
+                <p>Tasks</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="pe-7s-home"></i>
+                <p>Flats</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="pe-7s-users"></i>
+                <p>Users</p>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+    <main>
+        <div class="col-sm-12">
+
+            <p class="generated">
+            {%  if success == true %}
+                {{ sentence|raw }}
+            {% else %}
+                Unfortunately the city was not found.
+            {% endif %}
+            </p>
+            <hr>
+
+            <div class="col-md-3 dropdown">
+                <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                    Options
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <a class="my-link-danger" href="{{ path('remove') }}"class="my-link-danger">Remove your saved city.</a>
+
+                    <li class="divider"></li>
+
+                    <div class="form-group">
+                    <form action="{{ path('forecast') }}" method="get">
+                            <input type="search" name="city_name" class="my-searcher-2" placeholder="City name to change...">
+                            <button class="my-button-2" type="submit">Change</button>
+                    </form>
+                    </div>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+{% endblock %}
