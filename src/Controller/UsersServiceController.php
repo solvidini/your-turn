@@ -31,6 +31,7 @@ class UsersServiceController extends AbstractController
         $users = $repository->findBy($parameters);
 
         return $this->render('users_service/list.html.twig', [
+            'userz' => $users,
             'users' => $paginator->paginate(
                 $users,
                 $request->query->getInt('page', 1),

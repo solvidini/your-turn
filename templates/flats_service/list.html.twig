@@ -34,7 +34,8 @@
     <div class="container-fluid my-margin">
         <div class="row">
             <div class="col-md-12">
-               <p>Go <a href="{{ path('create_flat') }}">HERE</a> to create a flat.</p>
+                <p>Go <a href="{{ path('create_flat') }}">HERE</a> to create a flat.</p>
+                <p>Go <a href="">HERE</a> to see your flat list.</p>
             </div>
         </div>
     </div>
@@ -47,17 +48,19 @@
                         <div class="form-group">
                             <label for="flat_name" class="col-lg-3 col-lg-offset-1">Search for flats by: </label>
                             <div class="col-lg-2">
-                            <select name="option" class="form-control">
-                                <option value="id">ID</option>
-                                <option value="name">Name</option>
-                            </select>
+                                <select name="option" class="form-control">
+                                    <option value="id">ID</option>
+                                    <option value="name">Name</option>
+                                </select>
                             </div>
                             <div class="col-lg-4 col-lg-offset-right-2">
-                                <input type="search" id="flat_name" name="value" class="form-control" placeholder="value...">
+                                <input type="search" id="flat_name" name="value" class="form-control"
+                                       placeholder="value...">
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-fill btn-my col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1" type="submit">
+                    <button class="btn btn-fill btn-my col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1"
+                            type="submit">
                         Go!
                     </button>
                 </form>
@@ -82,26 +85,82 @@
                             <th class="text-center">Options</th>
                             </thead>
                             <tbody>
-                                {% for key, flat in flats %}
-                                    <tr>
-                                        <td>{{ flat.getId() }}</td>
-                                        <td>{{ flat.getName() }}</td>
-                                        <td>{{ numberOfUsers[key] }}</td>
-                                        <td class="text-center">
-                                            <a href="{{ path('join_flat', parameters = [  flat.getId() ]) }}" class="btn btn-fill btn-my btn-sm">Join flat</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                            {% for key, flat in flats %}
+                                <tr>
+                                    <td>{{ flat.getId() }}</td>
+                                    <td>{{ flat.getName() }}</td>
+                                    <td>{{ numberOfUsers[key] }}</td>
+                                    <td class="text-center">
+                                        {% if alreadyIn[key] == false %}
+                                            <button type="button" class="btn btn-fill btn-my btn-sm" data-toggle="modal"
+                                                    data-target="#joinFlat-{{ loop.index0 }}">
+                                                Join flat
+                                            </button>
+
+                                            <div class="modal fade" id="joinFlat-{{ loop.index0 }}" data-backdrop="false">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">
+                                                                {{ flat.getName() }}
+                                                            </h4>
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                &times;
+                                                            </button>
+                                                        </div>
+                                                        <!-- Modal body -->
+                                                        <div class="modal-body">
+                                                            <form action="{{ path('join_flat', parameters = [ flat.getId() ]) }}" method="post" id="users_service">
+                                                                <div class="row my-margin">
+                                                                    <div class="form-group">
+                                                                        <label for="flat_password" class="col-lg-3 col-lg-offset-2 margin-control" >Password: </label>
+                                                                        <div class="col-lg-4">
+                                                                            {% if msg is defined %}
+
+                                                                            {% endif %}
+                                                                            <input type="password" id="flat_password" name="password" class="form-control"
+                                                                                   placeholder="enter flat password...">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <button class=" col-lg-4 col-lg-offset-4 btn btn-fill btn-my btn-md btn-full col-xs-6 col-xs-offset-3"
+                                                                        type="submit" style="margin-top: 2em;">
+                                                                    Join
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-my"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        {% elseif alreadyIn[key] == true %}
+                                            <a href="{{ path('leave_flat', parameters = [ flat.getId() ]) }}" class="btn btn-fill btn-my btn-sm">
+                                                Leave flat
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                         <div class="text-center">
-                              {{ knp_pagination_render(flats) }}
+                            {{ knp_pagination_render(flats) }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 
 
 {% endblock %}

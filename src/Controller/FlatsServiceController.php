@@ -18,12 +18,16 @@ class FlatsServiceController extends AbstractController {
      * @Route("/flats/list", name="flats_service")
      * @param PaginatorInterface $paginator
      * @param Request $request
+     * @param UserInterface $user
      * @return Response
      */
-    public function index(PaginatorInterface $paginator, Request $request) {
+    public function index(PaginatorInterface $paginator, Request $request, UserInterface $user) {
         $repository = $this->getDoctrine()->getRepository(Flat::class);
         $em = $this->getDoctrine()->getManager();
 
+        $msg = null;
+        if (!empty($request->get('msg')))
+            $msg = $request->get('msg');
 
         if ($request->query->has('option') && !empty($request->query->get('value'))) {
             $value = $request->query->get('value');
@@ -37,11 +41,21 @@ class FlatsServiceController extends AbstractController {
         }
 
         $numberOfUsers = [];
+        $alreadyIn = [];
+
         foreach ($flats as $key => $flat) {
             $q = $em->createQuery("SELECT count(u.id) FROM App:User u WHERE ?1 MEMBER OF u.flats")->setParameter(1, $flats[$key]->getId());
             $numberOfUsers [$key] = $q->getSingleScalarResult();
-        }
 
+            $alreadyIn [$key] = false;
+
+            // check if the association exists
+            foreach ($user->getFlats() as $each) {
+                if ($each->getId() == $flat->getId()) {
+                    $alreadyIn [$key] = true;
+                }
+            }
+        }
 
         return $this->render('flats_service/list.html.twig', [
             'flats' => $paginator->paginate(
@@ -49,7 +63,9 @@ class FlatsServiceController extends AbstractController {
                 $request->query->getInt('page', 1),
                 10
             ),
-            'numberOfUsers' => $numberOfUsers
+            'numberOfUsers' => $numberOfUsers,
+            'alreadyIn' => $alreadyIn,
+            'msg' => $msg
         ]);
     }
 
@@ -92,18 +108,42 @@ class FlatsServiceController extends AbstractController {
     {
         $entityManager = $this->getDoctrine()->getManager();
         $flatId = $request->query->get('0');
-
-        // check if the association exists
-        foreach ($user->getFlats() as $each) {
-            if ($each->getId() == $flatId)
-                return $this->redirectToRoute('flats_service');
-        }
+        $pw = $request->get('password');
 
         $flat = $this->getDoctrine()
             ->getRepository(Flat::class)
             ->find($flatId);
 
-        $user->getFlats()->add($flat);
+        if ($pw != $flat->getPassword()){
+            return $this->redirectToRoute('flats_service', [
+                'msg' => "wrong password"
+            ]);
+        }
+
+        $user->addFlat($flat);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('flats_service');
+    }
+
+    /**
+     * @Route("/flats/leave", name="leave_flat")
+     * @param Request $request
+     * @param UserInterface $user
+     * @return Response
+     */
+    public function leave(Request $request, UserInterface $user)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $flatId = $request->query->get('0');
+
+        $flat = $this->getDoctrine()
+            ->getRepository(Flat::class)
+            ->find($flatId);
+
+        $user->removeFlat($flat);
 
         $entityManager->persist($user);
         $entityManager->flush();

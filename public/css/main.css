@@ -399,3 +399,18 @@ label {
         margin-right: 0;
     }
 }
+
+.modal-backdrop {
+    /* bug fix - no overlay */
+    display: none;
+}
+
+.margin-control {
+    top: 1em;
+}
+
+@media (max-width: 992px) {
+    .margin-control {
+        top: 0;
+    }
+}
