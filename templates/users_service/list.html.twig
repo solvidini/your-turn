@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+
+{% block isActive %}
+    <ul class="nav">
+        <li>
+            <a href="{{ path('forecast') }}">
+                <i class="pe-7s-user"></i>
+                <p>Forecast</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="pe-7s-note2"></i>
+                <p>Tasks</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('flats_service') }}">
+                <i class="pe-7s-home"></i>
+                <p>Flats</p>
+            </a>
+        </li>
+        <li class="active">
+            <a href="{{ path('users_service') }}">
+                <i class="pe-7s-users"></i>
+                <p>Users</p>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid my-margin">
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{{ path('users_service') }}" method="get" id="users_service" style="margin-bottom: 2em;">
+                    <h3 class="centered"> Search for users using </h3>
+                    <div class="row my-margin">
+                        <div class="col-md-3">
+                            <input type="search" name="user[id]" class="form-control" placeholder="User ID...">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="search" name="user[firstName]" class="form-control" placeholder="First name...">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="search" name="user[lastName]" class="form-control" placeholder="Last name...">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="search" name="" class="form-control" placeholder="Flat ID...">
+                        </div>
+                    </div>
+                    <button class="btn btn-fill btn-my col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1" type="submit">
+                        Go!
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Table of found users</h4>
+                        <p class="category">Search for your friends then add them to your flat!</p>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Flat ID</th>
+                            <th class="text-center">Options</th>
+                            </thead>
+                            <tbody>
+                            {% if users is defined %}
+                                {% for user in users %}
+                                    <tr>
+                                        <td>{{ user.getId() }}</td>
+                                        <td>{{ user.getFullName() }}</td>
+                                        <td>-</td>
+                                        <td class="text-center">
+                                            <a href="#" class="btn btn-fill btn-my btn-sm">Add to flat</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                        </table>
+                        <div class="text-center">
+                            {{ knp_pagination_render(users) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

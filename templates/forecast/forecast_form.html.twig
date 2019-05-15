@@ -15,13 +15,13 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ path('flats_service') }}">
                 <i class="pe-7s-home"></i>
                 <p>Flats</p>
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ path('users_service') }}">
                 <i class="pe-7s-users"></i>
                 <p>Users</p>
             </a>
@@ -39,7 +39,9 @@
                 <div class="searcher">
                     <input type="search" name="city_name" class="my-searcher" placeholder="City name...">
                     <br>
-                    <button class="my-button" type="submit">Add</button>
+                    <button class="btn btn-fill btn-my col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1" type="submit">
+                        Add
+                    </button>
                 </div>
             </form>
 

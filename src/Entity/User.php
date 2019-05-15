@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Annotations\Annotation;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -22,6 +25,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
      */
     private $email;
 
@@ -51,10 +57,28 @@ class User implements UserInterface
      */
     private $city;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Flat", inversedBy="users")
+     * @ORM\JoinTable(name="users_flats")
+     */
+    private $flats;
+
+    public function __construct() {
+        $this->flats = new ArrayCollection();
+    }
+
+    public function getFlats(){
+        return $this->flats;
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFullName() : ?string
+    {
+        return $this->firstName . ' ' . $this->getLastName();
     }
 
     public function getEmail(): ?string

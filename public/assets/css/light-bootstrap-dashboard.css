@@ -664,6 +664,27 @@ fieldset[disabled] .btn-primary.active {
     border-color: #049F0C;
 }
 
+.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active,
+.open > .btn-success.dropdown-toggle {
+    background-color: transparent;
+    color: #049F0C;
+    border-color: #049F0C;
+}
+
+.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active,
+.open > .btn-success.dropdown-toggle {
+    background-color: transparent;
+    color: #049F0C;
+    border-color: #049F0C;
+}
+
+.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active,
+.open > .btn-success.dropdown-toggle {
+    background-color: transparent;
+    color: #049F0C;
+    border-color: #049F0C;
+}
+
 .btn-success.disabled, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled.focus, .btn-success.disabled:active, .btn-success.disabled.active, .btn-success:disabled, .btn-success:disabled:hover, .btn-success:disabled:focus, .btn-success:disabled.focus, .btn-success:disabled:active, .btn-success:disabled.active, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled].focus, .btn-success[disabled]:active, .btn-success[disabled].active,
 fieldset[disabled] .btn-success,
 fieldset[disabled] .btn-success:hover,

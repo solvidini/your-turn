@@ -15,13 +15,13 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ path('flats_service') }}">
                 <i class="pe-7s-home"></i>
                 <p>Flats</p>
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ path('users_service') }}">
                 <i class="pe-7s-users"></i>
                 <p>Users</p>
             </a>
@@ -55,8 +55,8 @@
 
                     <div class="form-group">
                     <form action="{{ path('forecast') }}" method="get">
-                            <input type="search" name="city_name" class="my-searcher-2" placeholder="City name to change...">
-                            <button class="my-button-2" type="submit">Change</button>
+                            <input type="search" name="city_name" class="form-control" placeholder="City name to change...">
+                        <button class="btn btn-fill btn-my col-xs-12" type="submit"> Change </button>
                     </form>
                     </div>
                 </ul>

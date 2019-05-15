@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\OpenWeatherAPI;
 use App\Service\SentenceGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
@@ -17,7 +18,7 @@ class Forecast extends AbstractController
      * @Route("/forecast", name="forecast")
      * @param Request $request
      * @param UserInterface $user
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function index(Request $request, UserInterface $user)
     {
@@ -47,7 +48,7 @@ class Forecast extends AbstractController
         }
 
         //if user has not city
-        return $this->render('forecast/index.html.twig');
+        return $this->render('forecast/forecast_form.html.twig');
     }
 
     // alt+enter
@@ -58,7 +59,7 @@ class Forecast extends AbstractController
      * @param OpenWeatherAPI $openWeatherAPI
      * @param SentenceGenerator $sentenceGenerator
      * @param UserInterface $user
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function citySearch(Request $request, $city_name, OpenWeatherAPI $openWeatherAPI, SentenceGenerator $sentenceGenerator, UserInterface $user)
     {
@@ -73,14 +74,14 @@ class Forecast extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->render('forecast/generated.html.twig', [
+            return $this->render('forecast/forecast_generated.html.twig', [
                 'success' => true,
                 'sentence' => $sentence
             ]);
 
         }
 
-        return $this->render('forecast/generated.html.twig', [
+        return $this->render('forecast/forecast_generated.html.twig', [
             'success' => false
         ]);
     }
@@ -88,7 +89,7 @@ class Forecast extends AbstractController
     /**
      * @Route("/remove/city", name="remove")
      * @param UserInterface $user
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function remove(UserInterface $user)
     {

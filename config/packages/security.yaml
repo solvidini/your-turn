@@ -45,3 +45,4 @@ security:
          - { path: ^/city, roles: ROLE_USER }
          - { path: ^/forecast, roles: ROLE_USER }
          - { path: ^/remove, roles: ROLE_USER }
+         - { path: ^/users, roles: ROLE_USER }

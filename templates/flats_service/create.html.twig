@@ -15,8 +15,8 @@
                 <p>Tasks</p>
             </a>
         </li>
-        <li>
-            <a href="">
+        <li class="active">
+            <a href="{{ path('flats_service') }}">
                 <i class="pe-7s-home"></i>
                 <p>Flats</p>
             </a>
@@ -32,10 +32,15 @@
 
 {% block content %}
 
-
-
-                       <h1 class="centered">Welcome to 'Your Turn' app!</h1>
-
-
+{{ form_start(flatForm) }}
+<div class="form-group">
+    {{ form_row(flatForm.name, { 'label' : false, 'type' : 'text', 'attr' : { 'class' : 'form-control', 'placeholder' : 'Enter email address' }}) }}
+</div>
+<div class="form-group">
+    {{ form_row(flatForm.password, { 'label' : false, 'attr' : { 'class' : 'form-control', 'placeholder' : 'Enter your password' , 'id' : 'pass-field'}}) }}
+    <i id="pass-status" class="fas fa-eye eye-pos" aria-hidden="true"></i>
+</div>
+<button class="my-button-2">Register</button>
+{{ form_end(flatForm) }}
 
 {% endblock %}
