@@ -108,12 +108,12 @@
                                                                 &times;
                                                             </button>
                                                             <h4 class="modal-title">
-                                                                <span class="success">Join <b>{{ flat.getName() }}</b></span>
+                                                                <span class="success">Join <b>{{ flat.name }}</b></span>
                                                             </h4>
                                                         </div>
                                                         <!-- Modal body -->
                                                         <div class="modal-body">
-                                                            <form action="{{ path('join_flat', parameters = [ flat.getId() ]) }}"
+                                                            <form action="{{ path('join_flat', parameters = [ flat.id ]) }}"
                                                                   method="post">
                                                                 <div class="row">
                                                                     <div class="form-group">
@@ -163,12 +163,12 @@
                                                                 &times;
                                                             </button>
                                                             <h4 class="modal-title">
-                                                                <span class="warning">Are you sure you want to leave <b>{{ flat.getName() }}</b>?</span>
+                                                                <span class="warning">Are you sure you want to leave <b>{{ flat.name }}</b>?</span>
                                                             </h4>
                                                         </div>
                                                         <!-- Modal footer -->
                                                         <div class="modal-footer">
-                                                            <form action="{{ path('leave_flat', parameters = [ flat.getId() ]) }}"
+                                                            <form action="{{ path('leave_flat', parameters = [ flat.id ]) }}"
                                                                   method="post">
                                                                 <button class="col-lg-4 col-lg-offset-4 btn btn-fill btn-warning btn-md btn-full col-xs-6 col-xs-offset-3"
                                                                         type="submit">

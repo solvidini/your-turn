@@ -58,7 +58,8 @@ class TasksServiceController extends AbstractController {
             $data = $form->getData();
 
             $task->setName($data->getName());
-            $task->setFlat($data->getFlat());
+            $flat = $this->getDoctrine()->getRepository(Flat::class)->find($data->getFlat());
+            $task->setFlat($flat);
             $task->setType($data->getType());
             $task->setUser($user);
             $task->setNextUser($user);
@@ -132,8 +133,15 @@ class TasksServiceController extends AbstractController {
             $whichUser[$each->getId()] = $each->getFullName();
         }
 
-        if ($request->request->has('sequence')){
-            $sequence = $request->get('sequence');
+        $currentSequence = json_decode($task->getSequence());
+        $sequenceArray = [];
+        foreach($currentSequence as $key => $each){
+            $eachUser = $this->getDoctrine()->getRepository(User::class)->find($each);
+            $sequenceArray[$key] = $eachUser->getFullName();
+        }
+
+        if ($request->request->has('who')){
+            $sequence = $request->get('who');
             $newSequence = [];
             foreach($sequence as $key => $each){
                 $newSequence[$key] = $each;
@@ -151,11 +159,43 @@ class TasksServiceController extends AbstractController {
             $entityManager->persist($task);
 
             $entityManager->flush();
+
+            return $this->redirectToRoute('tasks_service');
         }
 
         return $this->render('tasks_service/edit_sequence.html.twig', [
             'task' => $task,
-            'whichUser' => $whichUser
+            'whichUser' => $whichUser,
+            'currentSequence' => $sequenceArray
         ]);
+    }
+
+    /**
+     * @Route("/tasks/delete", name="delete_task")
+     * @param Request $request
+     * @return Response
+     */
+    public function delete(Request $request) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $taskId = $request->query->get('0');
+        $pw = $request->get('password');
+
+        $task = $this->getDoctrine()
+            ->getRepository(Task::class)
+            ->find($taskId);
+
+        $flat = $task->getFlat();
+
+
+        if ($pw != $flat->getPassword()) {
+            return $this->redirectToRoute('tasks_service', [
+                'msg' => "wrong password"
+            ]);
+        }
+
+        $entityManager->remove($task);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('tasks_service');
     }
 }

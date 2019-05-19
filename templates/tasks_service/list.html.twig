@@ -52,7 +52,7 @@
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-hover table-striped">
                                     <thead>
-                                    <th class="col-md-4">Name</th>
+                                    <th class="col-md-4">Task name</th>
                                     <th class="col-md-1">Type</th>
                                     <th class="col-md-3">The next turn is</th>
                                     <th class="col-md-4 text-center">Options</th>
@@ -72,17 +72,65 @@
                                             <td class="text-center col-xs-12">
                                                 <div class="row col-xs-12">
                                                     {% if user == task.nextUser %}
-                                                            <a href="{{ path('your_turn', parameters = [ task.id ]) }}" type="button" class="btn btn-my btn-sm btn-fill">
-                                                                Your Turn
+                                                            <a href="{{ path('your_turn', parameters = [ task.id ]) }}" type="button" class="btn btn-success btn-sm btn-fill">
+                                                                Your turn
                                                                 <i class="fas fa-redo" style="font-size: 1em;"></i>
                                                             </a>
                                                     {% else %}
                                                         <button class="btn btn-my btn-sm btn-fill disabled">
-                                                            Your Turn
+                                                            Your turn
                                                             <i class="fas fa-redo" style="font-size: 1em;"></i>
                                                         </button>
                                                     {% endif %}
-                                                    <a href="{{ path('edit_sequence', parameters = [task.id]) }}" class="btn  btn-my btn-fill btn-sm">Edit Sequence</a>
+                                                    <a href="{{ path('edit_sequence', parameters = [task.id]) }}" class="btn  btn-info btn-fill btn-sm">Edit sequence</a>
+                                                    <button type="button" class="btn btn-fill btn-danger btn-sm" data-toggle="modal"
+                                                            data-target="#deleteTask-{{ loop.parent.loop.index ~ loop.index }}">
+                                                        <i class="pe-7s-trash" style="font-size:1.1em;"></i>
+                                                    </button>
+
+                                                    <div class="modal fade" id="deleteTask-{{ loop.parent.loop.index ~ loop.index }}" data-backdrop="false">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <!-- Modal Header -->
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal">
+                                                                        &times;
+                                                                    </button>
+                                                                    <h4 class="modal-title">
+                                                                        <span class="danger">Delete task  <b>{{ task.name }}</b></span>
+                                                                    </h4>
+                                                                </div>
+                                                                <!-- Modal body -->
+                                                                <div class="modal-body">
+                                                                    <form action="{{ path('delete_task', parameters = [ task.id ]) }}" method="post">
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <label for="flat_password" class="col-lg-3 col-lg-offset-2 margin-control" >Password: </label>
+                                                                                <div class="col-lg-4">
+                                                                                    {% if msg is defined %}
+
+                                                                                    {% endif %}
+                                                                                    <input type="password" id="flat_password" name="password" class="form-control"
+                                                                                           placeholder="enter flat password...">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <button class=" col-lg-4 col-lg-offset-4 btn btn-fill btn-danger btn-md btn-full col-xs-6 col-xs-offset-3"
+                                                                                type="submit" style="margin-top: 2em;">
+                                                                            Delete
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                                <!-- Modal footer -->
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-my"
+                                                                            data-dismiss="modal">Close
+                                                                    </button>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </td>
 

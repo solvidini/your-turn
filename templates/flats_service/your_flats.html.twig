@@ -50,8 +50,8 @@
                             <tbody>
                             {% for key, flat in flats %}
                                 <tr>
-                                    <td>{{ flat.getId() }}</td>
-                                    <td>{{ flat.getName() }}</td>
+                                    <td>{{ flat.id }}</td>
+                                    <td>{{ flat.name }}</td>
                                     <td>{{ numberOfUsers[key] }}</td>
                                     <td class="text-center">
                                         <button type="button" class="btn btn-fill btn-warning btn-sm" data-toggle="modal"
@@ -68,12 +68,12 @@
                                                             &times;
                                                         </button>
                                                         <h4 class="modal-title">
-                                                            <span class="warning">Are you sure you want to leave <b>{{ flat.getName() }}</b>?</span>
+                                                            <span class="warning">Are you sure you want to leave <b>{{ flat.name }}</b>?</span>
                                                         </h4>
                                                     </div>
                                                     <!-- Modal footer -->
                                                     <div class="modal-footer">
-                                                        <form action="{{ path('leave_flat', parameters = [ flat.getId(), true ]) }}" method="post">
+                                                        <form action="{{ path('leave_flat', parameters = [ flat.id, true ]) }}" method="post">
                                                             <button class="col-lg-4 col-lg-offset-4 btn btn-fill btn-warning btn-md btn-full col-xs-6 col-xs-offset-3"
                                                                     type="submit">
                                                                 Yes, I'm sure
@@ -101,12 +101,12 @@
                                                             &times;
                                                         </button>
                                                         <h4 class="modal-title">
-                                                            <span class="danger">Delete <b>{{ flat.getName() }}</b></span>
+                                                            <span class="danger">Delete <b>{{ flat.name }}</b></span>
                                                         </h4>
                                                     </div>
                                                     <!-- Modal body -->
                                                     <div class="modal-body">
-                                                        <form action="{{ path('delete_flat', parameters = [ flat.getId() ]) }}" method="post">
+                                                        <form action="{{ path('delete_flat', parameters = [ flat.id ]) }}" method="post">
                                                             <div class="row">
                                                                 <div class="form-group">
                                                                     <label for="flat_password" class="col-lg-3 col-lg-offset-2 margin-control" >Password: </label>
