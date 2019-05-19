@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+
+{% block isActive %}
+    <ul class="nav">
+        <li>
+            <a href="{{ path('forecast') }}">
+                <i class="pe-7s-user"></i>
+                <p>Forecast</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('tasks_service') }}">
+                <i class="pe-7s-note2"></i>
+                <p>Tasks</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('flats_service') }}">
+                <i class="pe-7s-home"></i>
+                <p>Flats</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('users_service') }}">
+                <i class="pe-7s-users"></i>
+                <p>Users</p>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+
+
+    <div class="container-fluid my-margin">
+        <div class="row">
+            <h3 class="text-center">Edit a sequence for <b>{{ task.name }}</b></h3>
+        </div>
+        <div class="row">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            {#                                <div class="header">#}
+                            {#                                    <h4 class="title">{{ flat.name }}</h4>#}
+                            {#                                </div>#}
+                            <div class="content table-responsive table-full-width">
+                                <form action="{{ path('edit_sequence', parameters = [task.id]) }}" method="post"
+                                      name="add_user" id="add_user">
+                                    <table class="table table-hover table-striped" id="dynamic_field">
+                                        {#                                        <thead>#}
+                                        {#                                        <th>Who</th>#}
+                                        {#                                        <th>Type</th>#}
+                                        {#                                        </thead>#}
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <select name="sequence[]" id="sequence" class="form-control">
+                                                    {% for key, which in whichUser %}
+                                                        <option value="{{ key }}">{{ which }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <button type="button" name="add" id="add" class="btn btn-fill btn-my">
+                                                    Add next
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <button type="submit" name="submit" id="submit"
+                                            class="btn btn-fill btn-my col-lg-4 col-lg-offset-4 col-xs-12">Create
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let i = 0;
+            $('#add').click(function () {
+                i++;
+                $('#dynamic_field').append('<tr id="row-' + i + '"><td><select name="sequence[]" id="sequence" class="form-control">{% for key, which in whichUser %}<option value="{{ key }}">{{ which }}</option>{% endfor %}</select></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-fill btn-danger btn_remove">X</button></td></tr>');
+            });
+
+            $(document).on('click', '.btn_remove', function () {
+                let button_id = $(this).attr("id");
+                $("#row-" + button_id + "").remove();
+            });
+
+            $('#submit').click(function () {
+                $.ajax({
+                    url: "{{ path('edit_sequence') }}",
+                    method: "POST",
+                    data: $('#add_user'),
+                    success: function (data) {
+                        alert(data);
+                        $('#add_user')[0].reset();
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

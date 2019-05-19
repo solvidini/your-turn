@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+
+{% block isActive %}
+    <ul class="nav">
+        <li>
+            <a href="{{ path('forecast') }}">
+                <i class="pe-7s-user"></i>
+                <p>Forecast</p>
+            </a>
+        </li>
+        <li class="active">
+            <a href="{{ path('tasks_service') }}">
+                <i class="pe-7s-note2"></i>
+                <p>Tasks</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('flats_service') }}">
+                <i class="pe-7s-home"></i>
+                <p>Flats</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('users_service') }}">
+                <i class="pe-7s-users"></i>
+                <p>Users</p>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <p>Go <a href="{{ path('create_task') }}">HERE</a> to create a task.</p>
+            </div>
+        </div>
+    </div>
+    <h1 class="text-center">Tasks</h1>
+    {% if flats is not null %}
+        {% for key, flat in flats %}
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">{{ flat.name }}</h4>
+                            </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                    <th class="col-md-4">Name</th>
+                                    <th class="col-md-1">Type</th>
+                                    <th class="col-md-3">The next turn is</th>
+                                    <th class="col-md-4 text-center">Options</th>
+                                    </thead>
+                                    <tbody>
+                                    {% for key, task in flat.tasks %}
+                                        <tr>
+                                            <td>{{ task.name }}</td>
+                                            <td>
+                                                {% if task.type == 'todo' %}
+                                                    TO-DO
+                                                {% else %}
+                                                    BUY
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ task.nextUser.getFullName() }}</td>
+                                            <td class="text-center col-xs-12">
+                                                <div class="row col-xs-12">
+                                                    {% if user == task.nextUser %}
+                                                            <a href="{{ path('your_turn', parameters = [ task.id ]) }}" type="button" class="btn btn-my btn-sm btn-fill">
+                                                                Your Turn
+                                                                <i class="fas fa-redo" style="font-size: 1em;"></i>
+                                                            </a>
+                                                    {% else %}
+                                                        <button class="btn btn-my btn-sm btn-fill disabled">
+                                                            Your Turn
+                                                            <i class="fas fa-redo" style="font-size: 1em;"></i>
+                                                        </button>
+                                                    {% endif %}
+                                                    <a href="{{ path('edit_sequence', parameters = [task.id]) }}" class="btn  btn-my btn-fill btn-sm">Edit Sequence</a>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        You haven't got any flats added!
+    {% endif %}
+{% endblock %}

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Annotations\Annotation;
 
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FlatRepository")
  * @ORM\Table(name="flats")
@@ -36,8 +37,15 @@ class Flat
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="flat")
+     * @ORM\JoinColumn(name="task_id", referencedColumnName="id")
+     */
+    private $tasks;
+
     public function __construct() {
         $this->users = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
 
     public function getUsers() {
@@ -88,6 +96,37 @@ class Flat
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             $user->removeFlat($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Task[]
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): self
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+            $task->setFlat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+            // set the owning side to null (unless already changed)
+            if ($task->getFlat() === $this) {
+                $task->setFlat(null);
+            }
         }
 
         return $this;

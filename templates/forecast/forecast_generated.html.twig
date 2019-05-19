@@ -9,7 +9,7 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ path('tasks_service') }}">
                 <i class="pe-7s-note2"></i>
                 <p>Tasks</p>
             </a>
@@ -43,21 +43,21 @@
             </p>
             <hr>
 
-            <div class="col-md-3 dropdown">
+            <div class="col-xs-4 dropdown">
                 <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
                     Options
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                    <a class="my-link-danger" href="{{ path('remove') }}"class="my-link-danger">Remove your saved city.</a>
+                    <a href="{{ path('remove') }}" class="my-link-danger">Remove your saved city.</a>
 
                     <li class="divider"></li>
 
                     <div class="form-group">
-                    <form action="{{ path('forecast') }}" method="get">
+                        <form action="{{ path('forecast') }}" method="get">
                             <input type="search" name="city_name" class="form-control" placeholder="City name to change...">
-                        <button class="btn btn-fill btn-my col-xs-12" type="submit"> Change </button>
-                    </form>
+                            <button class="btn btn-fill btn-my btn-block" type="submit"> Change </button>
+                        </form>
                     </div>
                 </ul>
             </div>

@@ -1,17 +1,30 @@
 function viewPassword() {
-    const passInput = document.getElementById('registration_form_plainPassword');
+    let passInput;
+
+    if (document.getElementById('registration_form_plainPassword'))
+        passInput = document.getElementById('registration_form_plainPassword');
+    else
+        passInput = document.getElementById('password');
+
     const passStatus = document.getElementById('pass-status');
-    if (passInput.type == 'password'){
+    if (passInput.type === 'password'){
         passInput.type = 'text';
-        passStatus.className = 'fas fa-eye-slash eye-pos';
+        passStatus.className = 'fas fa-eye eye-pos';
     }
 }
 function hidePassword() {
-    const passInput = document.getElementById('registration_form_plainPassword');
+    let passInput;
+
+    if (document.getElementById('registration_form_plainPassword'))
+        passInput = document.getElementById('registration_form_plainPassword');
+    else
+        passInput = document.getElementById('password');
+
+
     const passStatus = document.getElementById('pass-status');
-    if (passInput.type == 'text'){
+    if (passInput.type === 'text'){
         passInput.type = 'password';
-        passStatus.className = 'fas fa-eye eye-pos';
+        passStatus.className = 'fas fa-eye-slash eye-pos';
     }
 }
 

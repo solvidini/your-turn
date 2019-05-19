@@ -10,7 +10,7 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ path('tasks_service') }}">
                 <i class="pe-7s-note2"></i>
                 <p>Tasks</p>
             </a>
@@ -38,17 +38,14 @@
                 <form action="{{ path('users_service') }}" method="get" id="users_service" style="margin-bottom: 2em;">
                     <h3 class="centered"> Search for users using </h3>
                     <div class="row my-margin">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <input type="search" name="user[id]" class="form-control" placeholder="User ID...">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <input type="search" name="user[firstName]" class="form-control" placeholder="First name...">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <input type="search" name="user[lastName]" class="form-control" placeholder="Last name...">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="search" name="" class="form-control" placeholder="Flat ID...">
                         </div>
                     </div>
                     <button class="btn btn-fill btn-my col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1" type="submit">
@@ -72,7 +69,6 @@
                             <thead>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Flat IDs</th>
                             <th class="text-center">Options</th>
                             </thead>
                             <tbody>
@@ -81,14 +77,6 @@
                                     <tr>
                                         <td>{{ user.getId() }}</td>
                                         <td>{{ user.getFullName() }}</td>
-                                        <td>
-                                        {% for key, flat in user.flats %}
-                                            {{ flat.id }}
-                                            {% if not loop.last %}
-                                                ,
-                                            {% endif %}
-                                        {% endfor %}
-                                        </td>
                                         <td class="text-center">
                                             <a href="#" class="btn btn-fill btn-my btn-sm">Add to flat</a>
                                         </td>

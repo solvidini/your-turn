@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+
+{% block isActive %}
+    <ul class="nav">
+        <li>
+            <a href="{{ path('forecast') }}">
+                <i class="pe-7s-user"></i>
+                <p>Forecast</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('tasks_service') }}">
+                <i class="pe-7s-note2"></i>
+                <p>Tasks</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('flats_service') }}">
+                <i class="pe-7s-home"></i>
+                <p>Flats</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('users_service') }}">
+                <i class="pe-7s-users"></i>
+                <p>Users</p>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Your flats</h4>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <th>ID</th>
+                            <th>Flat name</th>
+                            <th>Number of users</th>
+                            <th class="text-center">Options</th>
+                            </thead>
+                            <tbody>
+                            {% for key, flat in flats %}
+                                <tr>
+                                    <td>{{ flat.getId() }}</td>
+                                    <td>{{ flat.getName() }}</td>
+                                    <td>{{ numberOfUsers[key] }}</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-fill btn-warning btn-sm" data-toggle="modal"
+                                                data-target="#leaveFlat-{{ loop.index0 }}">
+                                            Leave flat
+                                        </button>
+
+                                        <div class="modal fade" id="leaveFlat-{{ loop.index0 }}" data-backdrop="false">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            &times;
+                                                        </button>
+                                                        <h4 class="modal-title">
+                                                            <span class="warning">Are you sure you want to leave <b>{{ flat.getName() }}</b>?</span>
+                                                        </h4>
+                                                    </div>
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <form action="{{ path('leave_flat', parameters = [ flat.getId(), true ]) }}" method="post">
+                                                            <button class="col-lg-4 col-lg-offset-4 btn btn-fill btn-warning btn-md btn-full col-xs-6 col-xs-offset-3"
+                                                                    type="submit">
+                                                                Yes, I'm sure
+                                                            </button>
+                                                        </form>
+                                                        <button type="button" class="btn btn-my"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-fill btn-danger btn-sm" data-toggle="modal"
+                                                data-target="#deleteFlat-{{ loop.index0 }}">
+                                            Delete flat
+                                        </button>
+
+                                        <div class="modal fade" id="deleteFlat-{{ loop.index0 }}" data-backdrop="false">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            &times;
+                                                        </button>
+                                                        <h4 class="modal-title">
+                                                            <span class="danger">Delete <b>{{ flat.getName() }}</b></span>
+                                                        </h4>
+                                                    </div>
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+                                                        <form action="{{ path('delete_flat', parameters = [ flat.getId() ]) }}" method="post">
+                                                            <div class="row">
+                                                                <div class="form-group">
+                                                                    <label for="flat_password" class="col-lg-3 col-lg-offset-2 margin-control" >Password: </label>
+                                                                    <div class="col-lg-4">
+                                                                        {% if msg is defined %}
+
+                                                                        {% endif %}
+                                                                        <input type="password" id="flat_password" name="password" class="form-control"
+                                                                               placeholder="enter flat password...">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <button class=" col-lg-4 col-lg-offset-4 btn btn-fill btn-danger btn-md btn-full col-xs-6 col-xs-offset-3"
+                                                                    type="submit" style="margin-top: 2em;">
+                                                                Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-my"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="text-center">
+                            {{ knp_pagination_render(flats) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

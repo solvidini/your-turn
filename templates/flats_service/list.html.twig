@@ -10,7 +10,7 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{ path('tasks_service') }}">
                 <i class="pe-7s-note2"></i>
                 <p>Tasks</p>
             </a>
@@ -31,11 +31,11 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid my-margin">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <p>Go <a href="{{ path('create_flat') }}">HERE</a> to create a flat.</p>
-                <p>Go <a href="">HERE</a> to see your flat list.</p>
+                <p>Go <a href="{{ path('your_flats') }}">HERE</a> to see your flat list.</p>
             </div>
         </div>
     </div>
@@ -46,16 +46,16 @@
                 <form action="{{ path('flats_service') }}" method="get" id="users_service" style="margin-bottom: 2em;">
                     <div class="row my-margin">
                         <div class="form-group">
-                            <label for="flat_name" class="col-lg-3 col-lg-offset-1">Search for flats by: </label>
-                            <div class="col-lg-2">
-                                <select name="option" class="form-control">
+                            <label for="choice" class="col-lg-2 col-lg-offset-1 ">Search for flats by: </label>
+                            <div class="col-lg-1" style="padding: 0;">
+                                <select name="option" class="form-control" id="choice">
                                     <option value="id">ID</option>
                                     <option value="name">Name</option>
                                 </select>
                             </div>
-                            <div class="col-lg-4 col-lg-offset-right-2">
-                                <input type="search" id="flat_name" name="value" class="form-control"
-                                       placeholder="value...">
+                            <div class="col-lg-5 col-lg-offset-right-2" style="padding: 0;">
+                                <input type="search" id="value" name="value" class="form-control"
+                                       placeholder="Enter flat identifier...">
                             </div>
                         </div>
                     </div>
@@ -80,51 +80,56 @@
                         <table class="table table-hover table-striped">
                             <thead>
                             <th>ID</th>
-                            <th>Name</th>
+                            <th>Flat name</th>
                             <th>Number of users</th>
                             <th class="text-center">Options</th>
                             </thead>
                             <tbody>
                             {% for key, flat in flats %}
                                 <tr>
-                                    <td>{{ flat.getId() }}</td>
-                                    <td>{{ flat.getName() }}</td>
+                                    <td>{{ flat.id }}</td>
+                                    <td>{{ flat.name }}</td>
                                     <td>{{ numberOfUsers[key] }}</td>
                                     <td class="text-center">
                                         {% if alreadyIn[key] == false %}
-                                            <button type="button" class="btn btn-fill btn-my btn-sm" data-toggle="modal"
+                                            <button type="button" class="btn btn-fill btn-success btn-sm"
+                                                    data-toggle="modal"
                                                     data-target="#joinFlat-{{ loop.index0 }}">
                                                 Join flat
                                             </button>
 
-                                            <div class="modal fade" id="joinFlat-{{ loop.index0 }}" data-backdrop="false">
+                                            <div class="modal fade" id="joinFlat-{{ loop.index0 }}"
+                                                 data-backdrop="false">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <!-- Modal Header -->
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title">
-                                                                {{ flat.getName() }}
-                                                            </h4>
                                                             <button type="button" class="close" data-dismiss="modal">
                                                                 &times;
                                                             </button>
+                                                            <h4 class="modal-title">
+                                                                <span class="success">Join <b>{{ flat.getName() }}</b></span>
+                                                            </h4>
                                                         </div>
                                                         <!-- Modal body -->
                                                         <div class="modal-body">
-                                                            <form action="{{ path('join_flat', parameters = [ flat.getId() ]) }}" method="post" id="users_service">
-                                                                <div class="row my-margin">
+                                                            <form action="{{ path('join_flat', parameters = [ flat.getId() ]) }}"
+                                                                  method="post">
+                                                                <div class="row">
                                                                     <div class="form-group">
-                                                                        <label for="flat_password" class="col-lg-3 col-lg-offset-2 margin-control" >Password: </label>
+                                                                        <label for="flat_password"
+                                                                               class="col-lg-3 col-lg-offset-2 margin-control">Password: </label>
                                                                         <div class="col-lg-4">
                                                                             {% if msg is defined %}
 
                                                                             {% endif %}
-                                                                            <input type="password" id="flat_password" name="password" class="form-control"
+                                                                            <input type="password" id="flat_password"
+                                                                                   name="password" class="form-control"
                                                                                    placeholder="enter flat password...">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <button class=" col-lg-4 col-lg-offset-4 btn btn-fill btn-my btn-md btn-full col-xs-6 col-xs-offset-3"
+                                                                <button class=" col-lg-4 col-lg-offset-4 btn btn-fill btn-success btn-md btn-full col-xs-6 col-xs-offset-3"
                                                                         type="submit" style="margin-top: 2em;">
                                                                     Join
                                                                 </button>
@@ -142,9 +147,42 @@
                                             </div>
 
                                         {% elseif alreadyIn[key] == true %}
-                                            <a href="{{ path('leave_flat', parameters = [ flat.getId() ]) }}" class="btn btn-fill btn-my btn-sm">
+                                            <button type="button" class="btn btn-fill btn-warning btn-sm"
+                                                    data-toggle="modal"
+                                                    data-target="#leaveFlat-{{ loop.index0 }}">
                                                 Leave flat
-                                            </a>
+                                            </button>
+
+                                            <div class="modal fade" id="leaveFlat-{{ loop.index0 }}"
+                                                 data-backdrop="false">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                &times;
+                                                            </button>
+                                                            <h4 class="modal-title">
+                                                                <span class="warning">Are you sure you want to leave <b>{{ flat.getName() }}</b>?</span>
+                                                            </h4>
+                                                        </div>
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <form action="{{ path('leave_flat', parameters = [ flat.getId() ]) }}"
+                                                                  method="post">
+                                                                <button class="col-lg-4 col-lg-offset-4 btn btn-fill btn-warning btn-md btn-full col-xs-6 col-xs-offset-3"
+                                                                        type="submit">
+                                                                    Yes, I'm sure
+                                                                </button>
+                                                            </form>
+                                                            <button type="button" class="btn btn-my"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -160,7 +198,7 @@
         </div>
     </div>
 
-
+    <script src="{{ asset('js/change_placeholder_flats.js') }}" type="text/javascript"></script>
 
 
 {% endblock %}
