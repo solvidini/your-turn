@@ -75,10 +75,10 @@
                             {% if users is defined %}
                                 {% for user in users %}
                                     <tr>
-                                        <td>{{ user.getId() }}</td>
+                                        <td>{{ user.id }}</td>
                                         <td>{{ user.getFullName() }}</td>
                                         <td class="text-center">
-                                            <a href="#" class="btn btn-fill btn-my btn-sm">Add to flat</a>
+                                            <a href="#" class="btn btn-fill btn-info btn-sm">Add to flat</a>
                                         </td>
                                     </tr>
                                 {% endfor %}

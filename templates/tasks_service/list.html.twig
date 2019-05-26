@@ -31,16 +31,8 @@
 {% endblock %}
 
 {% block content %}
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <p>Go <a href="{{ path('create_task') }}">HERE</a> to create a task.</p>
-            </div>
-        </div>
-    </div>
-    <h1 class="text-center">Tasks</h1>
-    {% if flats is not null %}
+    <h1 class="text-center" style="margin-top: 0.25em;">Tasks</h1>
+    {% if flats is not empty %}
         {% for key, flat in flats %}
             <div class="container-fluid">
                 <div class="row">
@@ -48,6 +40,7 @@
                         <div class="card">
                             <div class="header">
                                 <h4 class="title">{{ flat.name }}</h4>
+                                <p class="category">Go <a href="{{ path('create_task', parameters = [ flat.id ]) }}">HERE</a> to create a task for this flat.</p>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table class="table table-hover table-striped">
@@ -146,6 +139,6 @@
             </div>
         {% endfor %}
     {% else %}
-        You haven't got any flats added!
+        <p>You haven't got any flats! Go <a href="{{ path('flats_service') }}">HERE</a> to join or create a flat.</p>
     {% endif %}
 {% endblock %}

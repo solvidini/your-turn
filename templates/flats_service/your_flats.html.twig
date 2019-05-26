@@ -106,7 +106,7 @@
                                                     </div>
                                                     <!-- Modal body -->
                                                     <div class="modal-body">
-                                                        <form action="{{ path('delete_flat', parameters = [ flat.id ]) }}" method="post">
+                                                        <form action="{{ path('delete_flat', parameters = [ flat.id, true ]) }}" method="post">
                                                             <div class="row">
                                                                 <div class="form-group">
                                                                     <label for="flat_password" class="col-lg-3 col-lg-offset-2 margin-control" >Password: </label>

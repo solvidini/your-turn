@@ -48,6 +48,10 @@ class Flat
         $this->tasks = new ArrayCollection();
     }
 
+    public function __toString() {
+        return $this->name;
+    }
+
     public function getUsers() {
         return $this->users;
     }

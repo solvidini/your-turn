@@ -43,9 +43,18 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="header">
+                            <div class="header" style="margin-bottom: 2.85em;">
+                                <div class="col-md-8">
                                 <h4 class="title">Flat: <b>{{ task.getFlat().name }}</b></h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" name="add" id="add" class="btn btn-fill btn-success col-xs-12 col-md-6" style="margin: 1em 0 1em 0; float: right;">
+                                        Add next
+                                    </button>
+                                </div>
                             </div>
+
+
                             <div class="content table-responsive table-full-width">
                                 <form action="{{ path('edit_sequence', parameters = [task.id]) }}" method="post"
                                       name="add_user" id="add_user">
@@ -53,7 +62,7 @@
                                         <tbody>
                                         {% for key, current in currentSequence %}
                                             <tr id="row-{{ 'g' ~ key }}">
-                                                <td>
+                                                <td class="col-xs-8">
                                                     <select name="who[]" id="who" class="form-control">
                                                         {% for key, which in whichUser %}
                                                             {% if which == current %}
@@ -64,22 +73,17 @@
                                                         {% endfor %}
                                                     </select>
                                                 </td>
-                                                <td>
-                                                    {% if key > 0 %}
-                                                        <button type="button" name="remove" id="{{ 'g' ~ key }}" class="btn btn-fill btn-danger btn_remove"><b style="font-size: 1.1em;">X</b></button>
-                                                    {% else %}
-                                                        <button type="button" name="add" id="add"
-                                                                class="btn btn-fill btn-my">
-                                                            Add next
-                                                        </button>
-                                                    {% endif %}
+                                                <td class="col-xs-4">
+                                                    <button type="button" name="remove" id="{{ 'g' ~ key }}"
+                                                            class="btn btn-fill btn-danger btn_remove"><b
+                                                                style="font-size: 1.1em;">X</b></button>
                                                 </td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
                                     </table>
                                     <button type="submit" name="submit" id="submit"
-                                            class="btn btn-fill btn-my col-lg-4 col-lg-offset-4 col-xs-12">Edit
+                                            class="btn btn-fill btn-my col-xs-12">Accept
                                     </button>
                                 </form>
                             </div>
@@ -97,7 +101,7 @@
             let i = 0;
             $('#add').click(function () {
                 i++;
-                $('#dynamic_field').append('<tr id="row-' + i + '"><td><select name="who[]" id="who" class="form-control">{% for key, which in whichUser %}<option value="{{ key }}">{{ which }}</option>{% endfor %}</select></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-fill btn-danger btn_remove"><b style="font-size: 1.1em;">X</b></button></td></tr>');
+                $('#dynamic_field').append('<tr id="row-' + i + '"><td class="col-xs-8"><select name="who[]" id="who" class="form-control">{% for key, which in whichUser %}<option value="{{ key }}">{{ which }}</option>{% endfor %}</select></td><td class="col-xs-4"><button type="button" name="remove" id="' + i + '" class="btn btn-fill btn-danger btn_remove"><b style="font-size: 1.1em;">X</b></button></td></tr>');
             });
 
             $(document).on('click', '.btn_remove', function () {

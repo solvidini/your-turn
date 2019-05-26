@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\Validator;
 use App\Form\FlatFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,7 @@ use App\Entity\Task;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Form\RegistrationFormType;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class FlatsServiceController extends AbstractController {
     /**
@@ -43,17 +45,22 @@ class FlatsServiceController extends AbstractController {
 
         $numberOfUsers = [];
         $alreadyIn = [];
+        $oneMember = [];
 
         foreach ($flats as $key => $flat) {
             $q = $em->createQuery("SELECT count(u.id) FROM App:User u WHERE ?1 MEMBER OF u.flats")->setParameter(1, $flats[$key]->getId());
             $numberOfUsers [$key] = $q->getSingleScalarResult();
 
             $alreadyIn [$key] = false;
+            $oneMember [$key] = false;
 
             // check if the association exists
             foreach ($user->getFlats() as $each) {
                 if ($each->getId() == $flat->getId()) {
                     $alreadyIn [$key] = true;
+                }
+                if (sizeof($flat->getUsers()) == 1) {
+                    $oneMember [$key] = true;
                 }
             }
         }
@@ -66,6 +73,7 @@ class FlatsServiceController extends AbstractController {
             ),
             'numberOfUsers' => $numberOfUsers,
             'alreadyIn' => $alreadyIn,
+            'oneMember' => $oneMember,
             'msg' => $msg
         ]);
     }
@@ -136,9 +144,10 @@ class FlatsServiceController extends AbstractController {
      * @Route("/flats/leave", name="leave_flat")
      * @param Request $request
      * @param UserInterface $user
+     * @param Validator $validator
      * @return Response
      */
-    public function leave(Request $request, UserInterface $user) {
+    public function leave(Request $request, UserInterface $user, Validator $validator) {
         $entityManager = $this->getDoctrine()->getManager();
         $flatId = $request->query->get('0');
         $yourFlats = $request->query->get('1');
@@ -146,28 +155,35 @@ class FlatsServiceController extends AbstractController {
         $flat = $this->getDoctrine()
             ->getRepository(Flat::class)
             ->find($flatId);
-        $tasks = $flat->getTasks();
-        foreach ($tasks as $task) {
-            $flat->removeTask($task);
-            $entityManager->remove($task);
-        }
 
-        $entityManager->persist($flat);
+        if ($validator->memberOfFlat($flat, $user)) {
 
-        $user->removeFlat($flat);
+            $tasks = $flat->getTasks();
+            foreach ($tasks as $task) {
+                $currentSequence = json_decode($task->getSequence());
+                if ($task->getNextUser() == $user) {
+                    $entityManager->remove($task);
+                } else if (in_array($user->getId(), $currentSequence)) {
 
-        $entityManager->persist($user);
+                    foreach ($currentSequence as $key => $each) {
+                        if ($currentSequence[$key] == null || $each == $user->getId())
+                            unset($currentSequence[$key]);
+                    }
+                    $currentSequence = json_encode($currentSequence);
+                    $task->setSequence($currentSequence);
+                    $entityManager->persist($task);
+                }
+            }
+            $entityManager->persist($flat);
 
-        $entityManager->flush();
+            $user->removeFlat($flat);
+            $entityManager->persist($user);
 
-        if (sizeof($flat->getUsers()) == 0) {
-            $entityManager->remove($flat);
             $entityManager->flush();
-        }
 
+        }
         if ($yourFlats)
             return $this->redirectToRoute('your_flats');
-
         return $this->redirectToRoute('flats_service');
     }
 
@@ -209,33 +225,38 @@ class FlatsServiceController extends AbstractController {
      * @Route("/flats/delete", name="delete_flat")
      * @param Request $request
      * @param UserInterface $user
+     * @param Validator $validator
      * @return Response
      */
-    public function delete(Request $request, UserInterface $user) {
+    public function delete(Request $request, UserInterface $user, Validator $validator) {
         $entityManager = $this->getDoctrine()->getManager();
         $flatId = $request->query->get('0');
-        $pw = $request->get('password');
+        $yourFlats = $request->query->get('1');
 
+        $pw = $request->get('password');
         $flat = $this->getDoctrine()
             ->getRepository(Flat::class)
             ->find($flatId);
-        $tasks = $flat->getTasks();
-        foreach ($tasks as $task) {
-            $flat->removeTask($task);
-            $entityManager->remove($task);
+
+        if ($validator->memberOfFlat($flat, $user)) {
+            if ($pw != $flat->getPassword()) {
+                return $this->redirectToRoute('your_flats', [
+                    'msg' => "wrong password"
+                ]);
+            }
+            $tasks = $flat->getTasks();
+            foreach ($tasks as $task) {
+                $flat->removeTask($task);
+                $entityManager->remove($task);
+            }
+
+            $entityManager->remove($flat);
+            $entityManager->flush();
         }
 
-
-        if ($pw != $flat->getPassword()) {
-            return $this->redirectToRoute('your_flats', [
-                'msg' => "wrong password"
-            ]);
-        }
-
-        $entityManager->remove($flat);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('your_flats');
+        if ($yourFlats)
+            return $this->redirectToRoute('your_flats');
+        return $this->redirectToRoute('flats_service');
     }
 }
 

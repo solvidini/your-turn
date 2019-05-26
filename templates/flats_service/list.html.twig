@@ -147,6 +147,7 @@
                                             </div>
 
                                         {% elseif alreadyIn[key] == true %}
+                                            {% if oneMember[key] == false %}
                                             <button type="button" class="btn btn-fill btn-warning btn-sm"
                                                     data-toggle="modal"
                                                     data-target="#leaveFlat-{{ loop.index0 }}">
@@ -183,6 +184,56 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {% elseif oneMember[key] == true %}
+                                                <button type="button" class="btn btn-fill btn-danger btn-sm" data-toggle="modal"
+                                                        data-target="#deleteFlat-{{ loop.index0 }}">
+                                                    Delete flat
+                                                </button>
+
+                                                <div class="modal fade" id="deleteFlat-{{ loop.index0 }}" data-backdrop="false">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <!-- Modal Header -->
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal">
+                                                                    &times;
+                                                                </button>
+                                                                <h4 class="modal-title">
+                                                                    <span class="danger">Delete <b>{{ flat.name }}</b></span>
+                                                                </h4>
+                                                            </div>
+                                                            <!-- Modal body -->
+                                                            <div class="modal-body">
+                                                                <form action="{{ path('delete_flat', parameters = [ flat.id ]) }}" method="post">
+                                                                    <div class="row">
+                                                                        <div class="form-group">
+                                                                            <label for="flat_password" class="col-lg-3 col-lg-offset-2 margin-control" >Password: </label>
+                                                                            <div class="col-lg-4">
+                                                                                {% if msg is defined %}
+
+                                                                                {% endif %}
+                                                                                <input type="password" id="flat_password" name="password" class="form-control"
+                                                                                       placeholder="enter flat password...">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button class=" col-lg-4 col-lg-offset-4 btn btn-fill btn-danger btn-md btn-full col-xs-6 col-xs-offset-3"
+                                                                            type="submit" style="margin-top: 2em;">
+                                                                        Delete
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                            <!-- Modal footer -->
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-my"
+                                                                        data-dismiss="modal">Close
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
                                         {% endif %}
                                     </td>
                                 </tr>

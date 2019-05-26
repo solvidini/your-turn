@@ -7,6 +7,7 @@ use App\Entity\Task;
 use App\Entity\User;
 use App\Form\FlatFormType;
 use App\Form\TaskFormType;
+use App\Service\Validator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -39,17 +40,10 @@ class TasksServiceController extends AbstractController {
     public function create(Request $request, UserInterface $user) {
         $task = new Task();
         $form = $this->createForm(TaskFormType::class, $task);
-        $flats = [];
-        if (sizeof($user->getFlats()) == 0)
-            $flats['-'] = '-';
-        foreach ($user->getFlats() as $flat) {
-            $flats[(string)$flat->getName()] = $flat;
-        }
+        $flatID = $request->query->get('0');
 
-        $form->add('flat', ChoiceType::Class, [
-            'choices' => $flats
-        ]);
-
+        $flat = $this->getDoctrine()->getRepository(Flat::class)->find($flatID);
+        //EntityType
         $form->handleRequest($request);
 
 
@@ -58,13 +52,12 @@ class TasksServiceController extends AbstractController {
             $data = $form->getData();
 
             $task->setName($data->getName());
-            $flat = $this->getDoctrine()->getRepository(Flat::class)->find($data->getFlat());
             $task->setFlat($flat);
             $task->setType($data->getType());
             $task->setUser($user);
             $task->setNextUser($user);
             $sequence = [
-                0 => $user->getId(),
+                0 => $user->getId()
             ];
             $task->setNextKey(0);
             $sequence = json_encode($sequence);
@@ -79,7 +72,8 @@ class TasksServiceController extends AbstractController {
         }
 
         return $this->render('tasks_service/create.html.twig', [
-            'taskForm' => $form->createView()
+            'taskForm' => $form->createView(),
+            'flat' => $flat
         ]);
     }
 
@@ -89,29 +83,37 @@ class TasksServiceController extends AbstractController {
      * @param UserInterface $user
      * @return RedirectResponse
      */
-    public function yourTurn(Request $request, UserInterface $user) {
+    public function yourTurn(Request $request, UserInterface $user, Validator $validator) {
         $entityManager = $this->getDoctrine()->getManager();
         $taskID = $request->query->get('0');
-        //tu trza naprawic, bo luka jak ch*& !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         $task = $this->getDoctrine()->getRepository(Task::class)->find($taskID);
-        $sequence = json_decode($task->getSequence());
 
-        $key = $task->getNextKey();
+        if ($validator->isYourTask($task, $user)) {
+            $sequence = json_decode($task->getSequence());
+            $key = $task->getNextKey();
 
-        $key++;
+            $key++;
+            if (!array_key_exists($key, $sequence)) {
+                $new_key = 0;
+                foreach ($sequence as $key) {
+                    $sequence[$new_key] = $key;
+                    $new_key++;
+                }
+            }
 
-        if ($key >= sizeof($sequence))
-            $task->setNextKey(0);
-        else $task->setNextKey($key);
+            if ($key >= sizeof($sequence))
+                $task->setNextKey(0);
+            else $task->setNextKey($key);
 
-        $nextUserID = (int)$sequence[$task->getNextKey()];
-        $nextUser = $this->getDoctrine()->getRepository(User::class)->find($nextUserID);
+            $nextUserID = (int)$sequence[$task->getNextKey()];
+            $nextUser = $this->getDoctrine()->getRepository(User::class)->find($nextUserID);
 
-        $task->setNextUser($nextUser);
+            $task->setNextUser($nextUser);
 
-        $entityManager->persist($task);
+            $entityManager->persist($task);
 
-        $entityManager->flush();
+            $entityManager->flush();
+        }
 
         return $this->redirectToRoute('tasks_service');
     }
@@ -122,60 +124,63 @@ class TasksServiceController extends AbstractController {
      * @param UserInterface $user
      * @return Response
      */
-    public function editSequence(Request $request, UserInterface $user) {
+    public function editSequence(Request $request, UserInterface $user, Validator $validator) {
         $entityManager = $this->getDoctrine()->getManager();
         $taskID = $request->query->get('0');
         $task = $this->getDoctrine()->getRepository(Task::class)->find($taskID);
-        $users = $task->getFlat()->getUsers();
-        $whichUser = [];
-
-        foreach ($users as $each) {
-            $whichUser[$each->getId()] = $each->getFullName();
-        }
-
-        $currentSequence = json_decode($task->getSequence());
-        $sequenceArray = [];
-        foreach($currentSequence as $key => $each){
-            $eachUser = $this->getDoctrine()->getRepository(User::class)->find($each);
-            $sequenceArray[$key] = $eachUser->getFullName();
-        }
-
-        if ($request->request->has('who')){
-            $sequence = $request->get('who');
-            $newSequence = [];
-            foreach($sequence as $key => $each){
-                $newSequence[$key] = $each;
+        if ($validator->isYourTask($task, $user)) {
+            $users = $task->getFlat()->getUsers();
+            $whichUser = [];
+            foreach ($users as $each) {
+                $whichUser[$each->getId()] = $each->getFullName();
             }
 
-            $nextUserID = (int)$sequence[0];
-            $nextUser = $this->getDoctrine()->getRepository(User::class)->find($nextUserID);
+            $currentSequence = json_decode($task->getSequence());
+            $sequenceArray = [];
+            foreach ($currentSequence as $key => $each) {
+                $eachUser = $this->getDoctrine()->getRepository(User::class)->find($each);
+                $sequenceArray[$key] = $eachUser->getFullName();
+            }
 
-            $newSequence = json_encode($newSequence);
+            if ($request->request->has('who')) {
+                $sequence = $request->get('who');
+                $newSequence = [];
+                foreach ($sequence as $key => $each) {
+                    $newSequence[$key] = $each;
+                }
 
-            $task->setSequence($newSequence);
-            $task->setNextKey(0);
-            $task->setNextUser($nextUser);
+                $nextUserID = (int)$sequence[0];
+                $nextUser = $this->getDoctrine()->getRepository(User::class)->find($nextUserID);
 
-            $entityManager->persist($task);
+                $newSequence = json_encode($newSequence);
 
-            $entityManager->flush();
+                $task->setSequence($newSequence);
+                $task->setNextKey(0);
+                $task->setNextUser($nextUser);
 
-            return $this->redirectToRoute('tasks_service');
+                $entityManager->persist($task);
+
+                $entityManager->flush();
+
+                return $this->redirectToRoute('tasks_service');
+            }
+            return $this->render('tasks_service/edit_sequence.html.twig', [
+                'task' => $task,
+                'whichUser' => $whichUser,
+                'currentSequence' => $sequenceArray
+            ]);
         }
-
-        return $this->render('tasks_service/edit_sequence.html.twig', [
-            'task' => $task,
-            'whichUser' => $whichUser,
-            'currentSequence' => $sequenceArray
-        ]);
+        return $this->redirectToRoute('tasks_service');
     }
 
     /**
      * @Route("/tasks/delete", name="delete_task")
      * @param Request $request
+     * @param UserInterface $user
+     * @param Validator $validator
      * @return Response
      */
-    public function delete(Request $request) {
+    public function delete(Request $request, UserInterface $user, Validator $validator) {
         $entityManager = $this->getDoctrine()->getManager();
         $taskId = $request->query->get('0');
         $pw = $request->get('password');
@@ -183,19 +188,19 @@ class TasksServiceController extends AbstractController {
         $task = $this->getDoctrine()
             ->getRepository(Task::class)
             ->find($taskId);
+        if ($validator->isYourTask($task, $user)) {
+            $flat = $task->getFlat();
 
-        $flat = $task->getFlat();
 
+            if ($pw != $flat->getPassword()) {
+                return $this->redirectToRoute('tasks_service', [
+                    'msg' => "wrong password"
+                ]);
+            }
 
-        if ($pw != $flat->getPassword()) {
-            return $this->redirectToRoute('tasks_service', [
-                'msg' => "wrong password"
-            ]);
+            $entityManager->remove($task);
+            $entityManager->flush();
         }
-
-        $entityManager->remove($task);
-        $entityManager->flush();
-
         return $this->redirectToRoute('tasks_service');
     }
 }
