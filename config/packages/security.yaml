@@ -47,3 +47,4 @@ security:
          - { path: ^/remove, roles: ROLE_USER }
          - { path: ^/users, roles: ROLE_USER }
          - { path: ^/flats, roles: ROLE_USER }
+         - { path: ^/tasks, roles: ROLE_USER }

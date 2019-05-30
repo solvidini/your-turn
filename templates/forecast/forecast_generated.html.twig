@@ -43,20 +43,19 @@
             </p>
             <hr>
 
-            <div class="col-xs-4 dropdown">
+            <div class="col-xs-5 dropdown">
                 <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
                     Options
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                    <a href="{{ path('remove') }}" class="my-link-danger">Remove your saved city.</a>
-
+                    <a href="{{ path('remove') }}" class="btn btn-danger btn-fill btn-block" style="margin-top: 1em;">Remove your saved city.</a>
                     <li class="divider"></li>
 
                     <div class="form-group">
                         <form action="{{ path('forecast') }}" method="get">
                             <input type="search" name="city_name" class="form-control" placeholder="City name to change...">
-                            <button class="btn btn-fill btn-my btn-block" type="submit"> Change </button>
+                            <button class="btn btn-fill btn-block" type="submit"> Change </button>
                         </form>
                     </div>
                 </ul>
