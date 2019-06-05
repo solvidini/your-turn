@@ -21,7 +21,7 @@ security:
                     - App\Security\LoginFormAuthenticator
             logout:
                 path:   app_logout
-                target: app_login
+                target: welcome
             # activate different ways to authenticate
             remember_me:
                 secret:   '%kernel.secret%'
@@ -48,3 +48,4 @@ security:
          - { path: ^/users, roles: ROLE_USER }
          - { path: ^/flats, roles: ROLE_USER }
          - { path: ^/tasks, roles: ROLE_USER }
+         - { path: ^/notifications, roles: ROLE_USER }

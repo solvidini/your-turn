@@ -4,8 +4,14 @@
 {% block isActive %}
     <ul class="nav">
         <li>
-            <a href="{{ path('forecast') }}">
+            <a href="{{ path('profile') }}">
                 <i class="pe-7s-user"></i>
+                <p>Profile</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('forecast') }}">
+                <i class="pe-7s-sun"></i>
                 <p>Forecast</p>
             </a>
         </li>
@@ -46,7 +52,7 @@
                 <form action="{{ path('flats_service') }}" method="get" id="users_service" style="margin-bottom: 2em;">
                     <div class="row my-margin">
                         <div class="form-group">
-                            <label for="choice" class="col-lg-2 col-lg-offset-1 ">Search for flats by: </label>
+                            <label for="choice" class="col-lg-3">Search for flats by:</label>
                             <div class="col-lg-1" style="padding: 0;">
                                 <select name="option" class="form-control" id="choice">
                                     <option value="id">ID</option>
@@ -59,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-fill col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1"
+                    <button class="btn btn-fill col-lg-4 col-lg-offset-4 col-xs-10 col-xs-offset-1"
                             type="submit">
                         Search
                     </button>

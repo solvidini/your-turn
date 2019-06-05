@@ -2019,7 +2019,7 @@ fieldset[disabled] .btn-neutral.active {
 }
 
 .footer nav > ul a:not(.btn):hover, .footer nav > ul a:not(.btn):focus {
-    color: rgba(119, 14, 8, 0.74);
+    color: rgb(132, 132, 132);
 }
 
 .footer .social-area {

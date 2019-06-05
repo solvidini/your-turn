@@ -12,7 +12,7 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
-class Forecast extends AbstractController
+class ForecastController extends AbstractController
 {
     /**
      * @Route("/forecast", name="forecast")
@@ -53,7 +53,7 @@ class Forecast extends AbstractController
 
     // alt+enter
     /**
-     * @Route("/city/{city_name}", name="show_forecast")
+     * @Route("/forecast/{city_name}", name="show_forecast")
      * @param Request $request
      * @param $city_name
      * @param OpenWeatherAPI $openWeatherAPI
@@ -87,7 +87,7 @@ class Forecast extends AbstractController
     }
 
     /**
-     * @Route("/remove/city", name="remove")
+     * @Route("/forecast/remove", name="remove")
      * @param UserInterface $user
      * @return Response
      */

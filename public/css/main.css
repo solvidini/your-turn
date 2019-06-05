@@ -170,6 +170,7 @@ body {
 .btn-my {
     border-color: rgba(210, 66, 70, 0.88);
     color: rgb(210,66,70);
+    cursor: pointer;
 }
 
 .btn-my:hover, .btn-my:focus, .btn-my:active, .btn-my.active,
@@ -518,3 +519,13 @@ fieldset[disabled] .btn-approve.active {
 
 
 /* end of button approve */
+
+.reject-notifi, .reject-notifi:hover {
+    color:#FF4A55;
+    cursor: pointer;
+}
+
+.accept-notifi, .accept-notifi:hover {
+    color:#1DC7EA;
+    cursor: pointer;
+}

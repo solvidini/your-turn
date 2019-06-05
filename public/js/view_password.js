@@ -1,4 +1,4 @@
-function viewPassword() {
+function view_password() {
     let passInput;
 
     if (document.getElementById('registration_form_plainPassword'))
@@ -29,5 +29,5 @@ function hidePassword() {
 }
 
 const el = document.getElementById('pass-status');
-el.addEventListener('mousedown', viewPassword);
+el.addEventListener('mousedown', view_password);
 el.addEventListener('mouseup', hidePassword);

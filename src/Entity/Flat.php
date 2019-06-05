@@ -43,9 +43,16 @@ class Flat
      */
     private $tasks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Notification", mappedBy="flat")
+     * @ORM\JoinTable(name="notifications")
+     */
+    private $notifications;
+
     public function __construct() {
         $this->users = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function __toString() {
@@ -130,6 +137,37 @@ class Flat
             // set the owning side to null (unless already changed)
             if ($task->getFlat() === $this) {
                 $task->setFlat(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setFlat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->contains($notification)) {
+            $this->notifications->removeElement($notification);
+            // set the owning side to null (unless already changed)
+            if ($notification->getFlat() === $this) {
+                $notification->setFlat(null);
             }
         }
 

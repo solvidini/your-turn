@@ -1,35 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
-{% block isActive %}
-    <ul class="nav">
-        <li>
-            <a href="{{ path('forecast') }}">
-                <i class="pe-7s-user"></i>
-                <p>Forecast</p>
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('tasks_service') }}">
-                <i class="pe-7s-note2"></i>
-                <p>Tasks</p>
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('flats_service') }}">
-                <i class="pe-7s-home"></i>
-                <p>Flats</p>
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('users_service') }}">
-                <i class="pe-7s-users"></i>
-                <p>Users</p>
-            </a>
-        </li>
-    </ul>
-{% endblock %}
-
 {% block content %}
 
     <div class="container-fluid">

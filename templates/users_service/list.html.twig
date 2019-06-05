@@ -4,8 +4,14 @@
 {% block isActive %}
     <ul class="nav">
         <li>
-            <a href="{{ path('forecast') }}">
+            <a href="{{ path('profile') }}">
                 <i class="pe-7s-user"></i>
+                <p>Profile</p>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('forecast') }}">
+                <i class="pe-7s-sun"></i>
                 <p>Forecast</p>
             </a>
         </li>
@@ -42,13 +48,14 @@
                             <input type="search" name="user[id]" class="form-control" placeholder="User ID...">
                         </div>
                         <div class="col-md-4">
-                            <input type="search" name="user[firstName]" class="form-control" placeholder="First name...">
+                            <input type="search" name="user[firstName]" class="form-control"
+                                   placeholder="First name...">
                         </div>
                         <div class="col-md-4">
                             <input type="search" name="user[lastName]" class="form-control" placeholder="Last name...">
                         </div>
                     </div>
-                    <button class="btn btn-fill col-md-4 col-md-offset-4 col-xs-10 col-xs-offset-1" type="submit">
+                    <button class="btn btn-fill col-lg-4 col-lg-offset-4 col-xs-10 col-xs-offset-1" type="submit">
                         Search
                     </button>
                 </form>
@@ -78,7 +85,70 @@
                                         <td>{{ user.id }}</td>
                                         <td>{{ user.getFullName() }}</td>
                                         <td class="text-center">
-                                            <a href="#" class="btn btn-fill btn-info btn-sm">Add to flat</a>
+                                            {% if user.id != app.user.id %}
+                                                <button type="button" class="btn btn-fill btn-info btn-sm"
+                                                        data-toggle="modal"
+                                                        data-target="#invite-{{ loop.index0 }}">
+                                                    Invite to flat
+                                                </button>
+
+                                                <div class="modal fade" id="invite-{{ loop.index0 }}"
+                                                     data-backdrop="false">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <!-- Modal Header -->
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal">
+                                                                    &times;
+                                                                </button>
+                                                                <h4 class="modal-title">
+                                                                    <span class="info">Invite <b>{{ user.getFullName() }}</b></span>
+                                                                </h4>
+                                                            </div>
+                                                            <!-- Modal body -->
+                                                            <div class="modal-body">
+                                                                <form action="{{ path('invite_user', parameters = [ user.id ]) }}"
+                                                                      method="post">
+                                                                    <div class="row">
+                                                                        <div class="form-group">
+                                                                            {% if app.user.flats is not empty %}
+                                                                                <label>
+                                                                                    Choose flat
+                                                                                    <div style="margin: 1em;">
+                                                                                        <select name="flat" class="form-control">
+                                                                                            {% for flat in app.user.flats %}
+                                                                                            <option value="{{ flat.id }}">{{ flat.name }}</option>
+                                                                                            {% endfor %}
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </label>
+                                                                            {% else %}
+                                                                                <p class="danger">You don't have any flats</p>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </div>
+                                                                    {% if app.user.flats is not empty %}
+                                                                    <button class=" col-lg-4 col-lg-offset-4 btn btn-fill btn-info btn-md btn-full col-xs-6 col-xs-offset-3"
+                                                                            type="submit" style="margin-top: 2em;">
+                                                                        Invite
+                                                                    </button>
+                                                                    {% endif %}
+                                                                </form>
+                                                            </div>
+                                                            <!-- Modal footer -->
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-danger"
+                                                                        data-dismiss="modal">Close
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <div style="margin: 0.43em;">-</div>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}

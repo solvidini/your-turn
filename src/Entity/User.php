@@ -64,8 +64,15 @@ class User implements UserInterface
      */
     private $flats;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Notification", mappedBy="recipient")
+     * @ORM\JoinTable(name="notifications")
+     */
+    private $notifications;
+
     public function __construct() {
         $this->flats = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function getFlats(){
@@ -200,6 +207,37 @@ class User implements UserInterface
     {
         if ($this->flats->contains($flat)) {
             $this->flats->removeElement($flat);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->contains($notification)) {
+            $this->notifications->removeElement($notification);
+            // set the owning side to null (unless already changed)
+            if ($notification->getRecipient() === $this) {
+                $notification->setRecipient(null);
+            }
         }
 
         return $this;

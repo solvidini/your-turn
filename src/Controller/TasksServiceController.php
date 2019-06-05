@@ -40,9 +40,9 @@ class TasksServiceController extends AbstractController {
     public function create(Request $request, UserInterface $user) {
         $task = new Task();
         $form = $this->createForm(TaskFormType::class, $task);
-        $flatID = $request->query->get('0');
+        $flatId = $request->query->get('0');
 
-        $flat = $this->getDoctrine()->getRepository(Flat::class)->find($flatID);
+        $flat = $this->getDoctrine()->getRepository(Flat::class)->find($flatId);
         //EntityType
         $form->handleRequest($request);
 
@@ -81,6 +81,7 @@ class TasksServiceController extends AbstractController {
      * @Route("/tasks/yourTurn", name="your_turn")
      * @param Request $request
      * @param UserInterface $user
+     * @param Validator $validator
      * @return RedirectResponse
      */
     public function yourTurn(Request $request, UserInterface $user, Validator $validator) {
@@ -115,13 +116,14 @@ class TasksServiceController extends AbstractController {
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('tasks_service');
+        return $this->redirect($request->server->get('HTTP_REFERER'));
     }
 
     /**
      * @Route("/tasks/edit/sequence", name="edit_sequence")
      * @param Request $request
      * @param UserInterface $user
+     * @param Validator $validator
      * @return Response
      */
     public function editSequence(Request $request, UserInterface $user, Validator $validator) {

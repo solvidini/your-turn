@@ -1,40 +1,12 @@
-{% extends 'base.html.twig' %}
-
-
-{% block isActive %}
-    <ul class="nav">
-        <li>
-            <a href="{{ path('forecast') }}">
-                <i class="pe-7s-user"></i>
-                <p>Forecast</p>
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('tasks_service') }}">
-                <i class="pe-7s-note2"></i>
-                <p>Tasks</p>
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('flats_service') }}">
-                <i class="pe-7s-home"></i>
-                <p>Flats</p>
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('users_service') }}">
-                <i class="pe-7s-users"></i>
-                <p>Users</p>
-            </a>
-        </li>
-    </ul>
-{% endblock %}
+{% extends 'home.html.twig' %}
 
 {% block content %}
 
-
-
-                       <h1 class="centered">Welcome to 'Your Turn' app!</h1>
+    <div class="content-block">
+        <div class="container">
+           <h1 class="text-center mt-5"> Welcome in <span style="color: #D24246;">Your Turn</span> App!</h1>
+        </div>
+    </div>
 
 
 

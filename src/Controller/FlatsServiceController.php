@@ -137,7 +137,7 @@ class FlatsServiceController extends AbstractController {
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('flats_service');
+        return $this->redirect($request->server->get('HTTP_REFERER'));
     }
 
     /**
@@ -150,7 +150,6 @@ class FlatsServiceController extends AbstractController {
     public function leave(Request $request, UserInterface $user, Validator $validator) {
         $entityManager = $this->getDoctrine()->getManager();
         $flatId = $request->query->get('0');
-        $yourFlats = $request->query->get('1');
 
         $flat = $this->getDoctrine()
             ->getRepository(Flat::class)
@@ -182,9 +181,7 @@ class FlatsServiceController extends AbstractController {
             $entityManager->flush();
 
         }
-        if ($yourFlats)
-            return $this->redirectToRoute('your_flats');
-        return $this->redirectToRoute('flats_service');
+        return $this->redirect($request->server->get('HTTP_REFERER'));
     }
 
     /**
@@ -231,7 +228,6 @@ class FlatsServiceController extends AbstractController {
     public function delete(Request $request, UserInterface $user, Validator $validator) {
         $entityManager = $this->getDoctrine()->getManager();
         $flatId = $request->query->get('0');
-        $yourFlats = $request->query->get('1');
 
         $pw = $request->get('password');
         $flat = $this->getDoctrine()
@@ -245,6 +241,13 @@ class FlatsServiceController extends AbstractController {
                 ]);
             }
             $tasks = $flat->getTasks();
+            $notifications = $flat->getNotifications();
+
+            foreach ($notifications as $notification) {
+                $flat->removeNotification($notification);
+                $entityManager->remove($notification);
+            }
+
             foreach ($tasks as $task) {
                 $flat->removeTask($task);
                 $entityManager->remove($task);
@@ -254,9 +257,7 @@ class FlatsServiceController extends AbstractController {
             $entityManager->flush();
         }
 
-        if ($yourFlats)
-            return $this->redirectToRoute('your_flats');
-        return $this->redirectToRoute('flats_service');
+        return $this->redirect($request->server->get('HTTP_REFERER'));
     }
 }
 

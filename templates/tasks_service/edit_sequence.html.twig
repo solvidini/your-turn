@@ -1,35 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
-{% block isActive %}
-    <ul class="nav">
-        <li>
-            <a href="{{ path('forecast') }}">
-                <i class="pe-7s-user"></i>
-                <p>Forecast</p>
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('tasks_service') }}">
-                <i class="pe-7s-note2"></i>
-                <p>Tasks</p>
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('flats_service') }}">
-                <i class="pe-7s-home"></i>
-                <p>Flats</p>
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('users_service') }}">
-                <i class="pe-7s-users"></i>
-                <p>Users</p>
-            </a>
-        </li>
-    </ul>
-{% endblock %}
-
 {% block content %}
 
 
@@ -48,7 +18,7 @@
                                 <h4 class="title">Flat: <b>{{ task.getFlat().name }}</b></h4>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="button" name="add" id="add" class="btn btn-fill btn-success col-xs-12 col-md-6" style="margin: 1em 0 1em 0; float: right;">
+                                    <button type="button" name="add" id="add" class="btn btn-fill btn-success btn-block" style="margin: 1em 0 1em 0; float: right;">
                                         Add next
                                     </button>
                                 </div>
@@ -114,10 +84,6 @@
                     url: "{{ path('edit_sequence') }}",
                     method: "POST",
                     data: $('#add_user'),
-                    success: function (data) {
-                        alert(data);
-                        $('#add_user')[0].reset();
-                    }
                 });
             });
         });

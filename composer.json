@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "knplabs/knp-paginator-bundle": "^3.0",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "4.2.*",
@@ -15,6 +16,7 @@
         "symfony/flex": "^1.1",
         "symfony/form": "4.2.*",
         "symfony/framework-bundle": "4.2.*",
+        "symfony/http-foundation": "4.2.*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/orm-pack": "^1.0",
         "symfony/process": "4.2.*",
@@ -25,8 +27,7 @@
         "symfony/twig-bundle": "4.2.*",
         "symfony/validator": "4.2.*",
         "symfony/web-link": "4.2.*",
-        "symfony/yaml": "4.2.*",
-      "ext-json": "*"
+        "symfony/yaml": "4.2.*"
     },
     "require-dev": {
         "symfony/debug-pack": "*",

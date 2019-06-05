@@ -26,4 +26,19 @@ class Validator {
         if ($task == null) return false;
         return in_array($task->getFlat(), $user->getFlats()->toArray());
     }
+
+    public function alreadyInvited($flat, $recipient){
+        $query = $this->em->createQuery(
+            'SELECT COUNT(n) 
+            FROM App\Entity\Notification n
+            WHERE n.flat = :flat
+            AND n.recipient = :recipient'
+        )->setParameters([
+            'flat' => $flat,
+                'recipient' => $recipient,
+            ]
+        );
+        $result = $query->execute();
+        return $result[0][1] > 0 ? true : false;
+    }
 }

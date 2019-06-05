@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <meta name="viewport" content="width=device-width" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
     <title>{% block title %}Your Turn{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{{ asset('img/icon.png') }}" sizes="24x24" />
+    <link rel="icon" type="image/png" href="{{ asset('img/icon.png') }}" sizes="24x24"/>
 
     {% block stylesheets %}
 
         <!-- Bootstrap core CSS     -->
-        <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
+        <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet"/>
 
         <!-- Animation library for notifications   -->
         <link href="{{ asset('assets/css/animate.min.css') }}" rel="stylesheet"/>
@@ -24,10 +24,12 @@
         <!--     Fonts and icons     -->
         <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
-        <link href="{{ asset('assets/css/pe-icon-7-stroke.css') }}" rel="stylesheet" />
+        <link href="{{ asset('assets/css/pe-icon-7-stroke.css') }}" rel="stylesheet"/>
 
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+              integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+              crossorigin="anonymous">
 
         <!-- My styles -->
         <link rel="stylesheet" href="{{ asset('css/main.css') }}"/>
@@ -47,34 +49,40 @@
                         <i class="fas fa-redo" style="font-size: 1em;"></i>
                     </a>
                 </div>
-{% block isActive %}
-                <ul class="nav">
-                    <li>
-                        <a href="{{ path('forecast') }}">
-                            <i class="pe-7s-user"></i>
-                            <p>Forecast</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('tasks_service') }}">
-                            <i class="pe-7s-note2"></i>
-                            <p>Tasks</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('flats_service') }}">
-                            <i class="pe-7s-home"></i>
-                            <p>Flats</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('users_service') }}">
-                            <i class="pe-7s-users"></i>
-                            <p>Users</p>
-                        </a>
-                    </li>
-                </ul>
-{% endblock %}
+                {% block isActive %}
+                    <ul class="nav">
+                        <li>
+                            <a href="{{ path('profile') }}">
+                                <i class="pe-7s-user"></i>
+                                <p>Profile</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('forecast') }}">
+                                <i class="pe-7s-sun"></i>
+                                <p>Forecast</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('tasks_service') }}">
+                                <i class="pe-7s-note2"></i>
+                                <p>Tasks</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('flats_service') }}">
+                                <i class="pe-7s-home"></i>
+                                <p>Flats</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('users_service') }}">
+                                <i class="pe-7s-users"></i>
+                                <p>Users</p>
+                            </a>
+                        </li>
+                    </ul>
+                {% endblock %}
             </div>
         </div>
         <div class="main-panel">
@@ -88,24 +96,52 @@
                             <span class="icon-bar"></span>
                         </button>
                         {% if app.user.firstName is defined %}
-                            <a class="navbar-brand" href="/">Welcome, {{ app.user.firstName }} !</a>
-                        {%  endif %}
+                            <a class="navbar-brand" href="{{ path('profile') }}">Welcome, {{ app.user.firstName }} !</a>
+                        {% endif %}
                     </div>
+                    <div id="accept-notification-path" data-path="{{ path('accept_notification') }}"></div>
+                    <div id="reject-notification-path" data-path="{{ path('reject_notification') }}"></div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-left">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-globe"></i>
-                                    <b class="caret hidden-lg hidden-md"></b>
-                                    <p class="hidden-lg hidden-md">
-                                        5 Notifications
-                                        <b class="caret"></b>
-                                    </p>
+                                    {% if app.user.notifications is not empty %}
+                                        <i class="fa fa-globe"></i>
+                                        <b class="caret hidden-lg hidden-md"></b>
+                                        <span class="how-many notification hidden-sm hidden-xs">
+                                            {{ app.user.notifications|length }}
+                                        </span>
+                                        <p class="how-many hidden-lg hidden-md">
+                                            {{ app.user.notifications|length }}
+                                            <b class="caret"></b>
+                                        </p>
+                                    {% else %}
+                                        <i class="fa fa-globe"></i>
+                                        <b class="caret hidden-lg hidden-md"></b>
+                                        <p class="hidden-lg hidden-md">
+                                            0
+                                            <b class="caret"></b>
+                                        </p>
+                                    {% endif %}
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Notification 1</a></li>
-                                    <li><a href="#">Notification 2</a></li>
-                                    <li><a href="#">Notification 3</a></li>
+                                    {% if app.user.notifications is not empty %}
+                                        {% for key, notification in app.user.notifications %}
+                                            <li id="invi-{{ notification.id }}" style="min-width: 200px; margin: 1em 2em 1.5em 3em ">
+                                                <div class="row">
+                                                    Invitation to "{{ notification.flat.name }}" flat
+                                                </div>
+
+                                                <div class="row">
+                                                    <a class="accept-notifi" data-inv="{{ notification.id }}"> Accept </a> |
+                                                    <a class="reject-notifi" data-inv="{{ notification.id }}">
+                                                        Reject </a>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li><a>No new notifications</a></li>
+                                    {% endif %}
                                 </ul>
                             </li>
                         </ul>
@@ -125,37 +161,31 @@
                     </div>
                 </div>
             </nav>
-
             <div class="content">
-            {%  block content %} {% endblock %}
+                {% block content %} {% endblock %}
             </div>
 
-        <footer class="footer">
-            <div class="container-fluid">
+            <footer class="footer">
+                <div class="container-fluid">
 
-                <nav class="pull-left">
-                    <ul>
-                        <li>
-                            <a href="/">
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/">
-                                Portfolio
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <p class="copyright pull-right">
-                    <i>Site made by <b>Samuel Kędziora</b>
-                    &copy;
-                        <script>document.write(new Date().getFullYear())</script></i>
-                </p>
-            </div>
-        </footer>
+                    <nav class="pull-left">
+                        <ul>
+                            <li>
+                                <a href="/">
+                                    Home
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <p class="copyright pull-right">
+                        <i>Site made by <b>Samuel Kędziora</b>
+                            &copy;
+                            <script>document.write(new Date().getFullYear())</script>
+                        </i>
+                    </p>
+                </div>
+            </footer>
         </div>
-
 
 
     </div>
@@ -167,17 +197,17 @@
     <script src="{{ asset('assets/js/jquery.3.2.1.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
 
-
     <!--  Charts Plugin -->
     <script src="{{ asset('assets/js/chartist.min.js') }}"></script>
 
     <!--  Notifications Plugin    -->
     <script src="{{ asset('assets/js/bootstrap-notify.js') }}"></script>
 
-    <!--  Google Maps Plugin    -->
-    <script type="{{ asset('text/javascript') }}" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-
     <script src="{{ asset('assets/js/light-bootstrap-dashboard.js?v=1.4.0') }}assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
+
+    <!--  My scripts    -->
+    <script src="{{ asset('js/notifi_ajax.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/stop_propagation.js') }}" type="text/javascript"></script>
 
 {% endblock %}
 </body>
