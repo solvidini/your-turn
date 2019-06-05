@@ -18,7 +18,7 @@ class Notification
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="notifications")
      * @ORM\JoinColumn(name="recipient_id", referencedColumnName="id")
      */
     private $recipient;

@@ -49,3 +49,4 @@ security:
          - { path: ^/flats, roles: ROLE_USER }
          - { path: ^/tasks, roles: ROLE_USER }
          - { path: ^/notifications, roles: ROLE_USER }
+         - { path: ^/account, roles: ROLE_USER }

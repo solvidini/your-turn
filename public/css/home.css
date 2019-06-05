@@ -13,7 +13,7 @@ body {
 }
 
 .content-block {
-    background-image: url('../assets/img/sidebar.jpg');
+    background-image: url('../img/background.jpg');
     background-size: cover;
     background-position: center center;
     min-height: 90%;
@@ -39,4 +39,19 @@ body {
 }
 .content-block .card{
     background: rgba(0,0,0,0.7);
+}
+
+@media (min-width: 768px) {
+    .navbar-nav {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+    .navbar-nav > li {
+        float: none;
+        display: inline-block;
+    }
+    .navbar-nav > li.navbar-right {
+        float: right !important;
+    }
 }
