@@ -5,7 +5,7 @@
 
 ## General info
 This is my first big project.
-It's a web application that is used to help people remember their tasks and who is the turn now in homes e.g
+It's a web application that is used to help people remember their tasks at home and who is the turn now e.g
 - buy milk,
 - take out the garbage,
 - who is cleaning the bathroom now? etc.
