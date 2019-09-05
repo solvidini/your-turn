@@ -8,7 +8,7 @@ This is my first bigger web project.
 It's a web application that is used to help people remember their tasks at home and who is the turn now e.g
 - buy milk,
 - take out the garbage,
-- who is cleaning the bathroom now? etc.
+- whose turn to clean the bathroom? etc.
 	
 ## Technologies
 Project is created with:
@@ -21,4 +21,4 @@ Project is created with:
 * and the rest of the code... :)
 	
 ## Setup
-This project will be soon available in the Internet. When it's done (It's almost done) I'll upload it to my VPS:
+This project will be soon available in the Internet.
