@@ -1,3 +1,5 @@
+# Your Turn
+
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
@@ -14,11 +16,12 @@ It's a web application that is used to help people remember their tasks at home 
 Project is created with:
 * Symfony 4
 * AJAX inserts
-* Doctrine
-* Twig
 * Template from https://www.creative-tim.com/product/light-bootstrap-dashboard
 * Bootstrap 4
 * and the rest of the code... :)
 	
 ## Setup
 This project will be soon available in the Internet.
+
+## Author
+Samuel Kędziora
